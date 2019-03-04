@@ -1,3 +1,8 @@
+const numerosMagicos = {
+    "0" : "zero",
+    "100": "cem"
+}
+
 const unidades = {
     "0"     : "",
     "1"     : "um",
@@ -34,7 +39,18 @@ const dezenas = {
     "9"     : "noventa"      
 }
 
-const centena = "cem"
+const centenas = {
+    "0" : "",
+    "1" : "cento",
+    "2" : "duzentos",
+    "3" : "trezentos",
+    "4" : "quatrocentos",
+    "5" : "quinhentos",
+    "6" : "seiscentos",
+    "7" : "setecentos",
+    "8" : "oitocentos",
+    "9" : "novecentos"
+}
 
 
 /* const numberOrderSingular = {
@@ -48,4 +64,4 @@ const centena = "cem"
     "24"    : "setilhão"  
 } */
 
-module.exports = { unidades, dezenas,centena };
+module.exports = { numerosMagicos,unidades, dezenas,centenas};

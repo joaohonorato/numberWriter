@@ -1,13 +1,20 @@
-const {unidades, dezenas} = require('../utilitario/constantes')
+const {numerosMagicos,unidades, dezenas, centenas} = require('../utilitario/constantes')
 
 module.exports.write  = (number) => {
     let output = [];
-    if(number < 20){
-      return unidades[number];
+    console.log(number)
+    if(numerosMagicos[number]){
+       return numerosMagicos[number]; 
+    } else if(number < 20){
+      return unidades[parseInt(number,10)];
     } else {
         output = decompose(number);
     }
-    return dezenas[output[1]] + " e " + unidades[output[0]];
+    console.log(output)
+    cems = centenas[output[2] || 0];
+    dezs = dezenas [output[1] || 0];
+    ums  = unidades[output[0] || 0];
+    return (cems ? cems +" e ": "") + (dezs ? dezs +" e ": "") + ums;
 } 
 
 function decompose(number) {
