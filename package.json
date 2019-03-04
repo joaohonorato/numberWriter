@@ -1,0 +1,30 @@
+{
+  "name": "certi",
+  "version": "1.0.0",
+  "description": "Number writer",
+  "main": "src/server/app/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon src/server/app/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joaohonorato/certi.git"
+  },
+  "keywords": [
+    "certi",
+    "avaliacao",
+    "desafio",
+    "escritor",
+    "de",
+    "numeros",
+    "processo",
+    "seletivo"
+  ],
+  "author": "João Assis",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/joaohonorato/certi/issues"
+  },
+  "homepage": "https://github.com/joaohonorato/certi#readme"
+}
