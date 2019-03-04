@@ -1,10 +1,12 @@
 const routes = require('../app/routes');
 const numberWriter = require('../modules/numberWriter')
 const URL = require('url').URL;
+const {HOST,PORT} = require('../app/config');
+
 
 module.exports.handleRequest = (req,res,next) => {
     res.writeHead(200, { 'content-type': 'application/json; charset=utf-8' });
-    let urlPath = new URL(req.url, 'http://127.0.0.1/').pathname;   
+    let urlPath = new URL(req.url, `http://${HOST}:${PORT}`).pathname;   
     if(urlPath.match(routes.homepage.regex)){    
         welcome(req,res);
     }else if(urlPath.match(routes.numberwriter.regex)){

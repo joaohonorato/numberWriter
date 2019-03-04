@@ -3,6 +3,11 @@ const numerosMagicos = {
     "100": "cem"
 }
 
+const operadores = {
+    "-" : "menos ",
+    "conectores": " e ",
+}
+
 const unidades = {
     "0"     : "",
     "1"     : "um",
@@ -64,4 +69,4 @@ const centenas = {
     "24"    : "setilhão"  
 } */
 
-module.exports = { numerosMagicos,unidades, dezenas,centenas};
+module.exports = { numerosMagicos,unidades, dezenas,centenas, operadores};

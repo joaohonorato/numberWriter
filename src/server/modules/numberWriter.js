@@ -1,37 +1,36 @@
-const {numerosMagicos,unidades, dezenas, centenas} = require('../utilitario/constantes')
+const {numerosMagicos,unidades, dezenas, centenas,operadores} = require('../utilitario/constantes')
 
 module.exports.write  = (number) => {
     let output = [];
-    console.log(number)
+    let sign = "";
+    /* Valida o sinal do número */
+    if(operadores[number.substring(0,1)]){
+        sign = operadores[number.substring(0,1)];
+        number = number.substring(1);
+    }
+    /* Verifica se é um numero esdruxulo (0 e 100) e fornece tratamento diferenciado */
     if(numerosMagicos[number]){
-       return numerosMagicos[number]; 
-    } else if(number < 20){
-      return unidades[parseInt(number,10)];
-    } else {
+       return sign + numerosMagicos[number]; 
+    } 
+    /* Verifica se é um numero entre 0 e 19 e printa diretamente o número, pode se optar por incluir o 20*/
+    /* Retorna o número por extenso caso match direto */
+    else if(number < 20){
+      return sign + unidades[parseInt(number,10)];
+    } 
+    /* Caso número maior que 20, decompõe o número em partes, milhares, centenas, dezenas e unidades */
+    else {
         output = decompose(number);
     }
-    console.log(output)
+    /* Prepara o número em texto para exibição */
     cems = centenas[output[2] || 0];
     dezs = dezenas [output[1] || 0];
     ums  = unidades[output[0] || 0];
-    return (cems ? cems +" e ": "") + (dezs ? dezs +" e ": "") + ums;
-} 
+    output = sign + (cems ? cems + operadores.conectores : "") + (dezs ? dezs + operadores.conectores : "") + ums;
+    
+
+    return output
+    } 
 
 function decompose(number) {
     return [...number].reverse();
 }
-
-
-
-/* 
-    Idéia geral:
-    1)Criar uma função que lê os números de 3 em 3, de 0 à 999
-        1.1) essa função se repetira quando a ordem de grandeza aumentar
-        1.2)[ 1, 19 ] => direto
-        1.3)[20,999] => decompor => parse => direto
-    2)Tratar do sinal de menos, e de como entregar o json no formato correto.    
-    3)Decompor o número em parcelas de 3 em 3, neste caso será  nó máximo 2 e 3, 
-    mas que cuidará disso será nosso requestHandler, essa função não será 
-    necessariamente limitada a especificação do intervalo
-    4) Tratar os valores decompostos, transformando em número por extenso. 
-*/
