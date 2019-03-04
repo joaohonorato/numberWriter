@@ -1,4 +1,5 @@
-const fillNumber = {
+const unidades = {
+    "0"     : "",
     "1"     : "um",
     "2"     : "dois",
     "3"     : "três",
@@ -18,37 +19,25 @@ const fillNumber = {
     "17"    : "dezessete",
     "18"    : "dezoito",
     "19"    : "dezenove",
-    "20"    : "vinte",
-    "30"    : "trinta",
-    "40"    : "quarenta",
-    "50"    : "cinquenta",
-    "60"    : "sessenta",
-    "70"    : "setenta",
-    "80"    : "oitenta",
-    "90"    : "noventa",
-    "100"   : "cem",
-    "200"   : "duzentos",
-    "300"   : "trezentos",
-    "400"   : "quatrocentos",
-    "500"   : "quinhentos",
-    "600"   : "seiscentos",
-    "700"   : "setecentos",
-    "800"   : "oitocentos",
-    "900"   : "novecentos"
 }
 
-const numberOrderPlural = {
-    "3"     : "mil",
-    "6"     : "milhões",
-    "9"     : "bilhões",
-    "12"    : "trilhões",
-    "15"    : "quatrilhões",
-    "18"    : "quintilhões",
-    "21"    : "sextilhões",
-    "24"    : "setilhões"  
+const dezenas = {
+    "0"     : "",
+    "1"     : "",
+    "2"     : "vinte",
+    "3"     : "trinta",
+    "4"     : "quarenta",
+    "5"     : "cinquenta",
+    "6"     : "sessenta",
+    "7"     : "setenta",
+    "8"     : "oitenta",
+    "9"     : "noventa"      
 }
 
-const numberOrderSingular = {
+const centena = "cem"
+
+
+/* const numberOrderSingular = {
     "3"     : "mil",
     "6"     : "milhão",
     "9"     : "bilhão",
@@ -57,6 +46,6 @@ const numberOrderSingular = {
     "18"    : "quintilhão",
     "21"    : "sextilhão",
     "24"    : "setilhão"  
-}
+} */
 
-module.exports = { fillNumber, numberOrderPlural,numberOrderSingular };
+module.exports = { unidades, dezenas,centena };
