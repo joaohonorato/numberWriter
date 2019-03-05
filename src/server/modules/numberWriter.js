@@ -1,70 +1,100 @@
-const {numerosMagicos,unidades, dezenas, centenas,operadores,grandezas} = require('../utilitario/constantes')
+const {
+  numerosBase,
+  grandezasBase,
+  numeros,
+  dezenas,
+  centenas,
+  operadores,
+  ordemDasGrandezas
+} = require("../utilitario/constantes");
 
-module.exports.execute = function execute(number){
-    return escreverPorExtenso(...decomporMilhar(...separarSinalENumero(number)));
+module.exports.execute = function execute(number) {
+  let [sinal, numero] = separarSinalENumero(number);
+  let numeroEmGradezas = decomporEmGradezas(numero);
+  let grandezasMapeadas = numeroEmGradezas.map(numero => decomporNumero(numero));
+  let grandezasPorExtenso = grandezasMapeadas.map(grandeza => escreverNumero(grandeza));
+  console.log("grandezasPorExtenso",grandezasPorExtenso)
+  let numeroPorExtenso = concatenarGrandezas(grandezasPorExtenso);
+  console.log("Numero por extenso:", numeroPorExtenso);
+  return;
+};
+
+function concatenarGrandezas(grandezasPorExtenso){
+    grandezasComConectores = grandezasPorExtenso.map((grandezaPorExtenso,index, grandezas) => {
+        let ultimoItem = index === grandezas.length -1;
+        if(!ultimoItem  && grandezaPorExtenso === numerosBase[0] ){
+            return "";
+        }else if(ultimoItem && grandezas.length > 1 && grandezas.slice(0,index).every(numero => numero !== numerosBase[0])){
+            return (grandezaPorExtenso === numerosBase[0]) ? " " : `${operadores.conectores}${grandezaPorExtenso}`;
+        } 
+        return ultimoItem ? grandezaPorExtenso : grandezaPorExtenso +" "+ grandezasBase[index];
+    })
+
+    return grandezasComConectores.reduce((acc,numero) =>  acc.concat(numero));
 }
 
-function separarSinalENumero(numero){
-    sinal = "";
-    if(operadores[numero.substring(0,1)]){
-        sinal = numero.substring(0,1);
-        numero = numero.substring(1);
-    }
-    return [sinal, numero];
-}
-
-function decomporMilhar(sinal, numero) {    
-    let numeroEspecial = [];
-    ultimosDois = numero.substring(numero.length -grandezas.dezenas ,numero.length)
-    if(souUmNumeroMagico(numero)){
-        return [sinal,numero]
-    } else if (souUmaUnidade(ultimosDois)){
-        numeroEspecial = ultimosDois;
-        numero = numero.substring(0,numero.length -grandezas.dezenas);
-    }
-    return numeroEspecial.length != 0 ? [sinal,[...numero , numeroEspecial]] :  [sinal,[...numero]];
-}
-
-function escreverPorExtenso(sinal, numero){
-    let numeroPorExtenso = "";
-    if(souUmNumeroMagico(numero)){
-        numeroPorExtenso = `${operadores[sinal]} ${numerosMagicos[numero]}`; 
+function concatenarNumeros(grandezaDecomposta){
+    let grandezaPorExtenso = "";
+    if(grandezaDecomposta[grandezaDecomposta.length -1].length == 2){
+        unidadeComoDezena = numerosBase[parseInt(grandezaDecomposta[1])] === undefined ? "" : numerosBase[parseInt(grandezaDecomposta[1])];
+        let centena = centenas[grandezaDecomposta[0]];
+        grandezaPorExtenso = `${centena}${(unidadeComoDezena===numerosBase[0]) ? "":`${operadores.conectores} ${unidadeComoDezena}` }`
     } else {
-        numeroPorExtenso = concatenar(sinal, numero)    
-     }
-    /*  console.log("numeroPorExtenso",numeroPorExtenso) */
-    return numeroPorExtenso
-}   
-
-function concatenar(...arg){
-    let [sinal, numeroComposto] = arg;
-    let stringConcatenada = "";
-    if(numeroComposto[numeroComposto.length -1].length == 2){
-        unidadesComoDezena = numeroComposto[arg.length - 1]
-        centena = numeroComposto[0]
-        if(parseInt(unidadesComoDezena) === 0){
-            stringConcatenada = `${operadores[sinal]} ${centenas[centena]}`
-        } else {
-            stringConcatenada = `${operadores[sinal]} ${centenas[centena]}${operadores.conectores}${unidades[parseInt(unidadesComoDezena)]}`;
-        }
-    } else{
-        numeroComposto = numeroComposto.reverse();
-        ums  = unidades[numeroComposto[0] || 0];
-        dezs = dezenas [numeroComposto[1] || 0];
-        cems = centenas[numeroComposto[2] || 0];
-        let sinalPorExtenso = operadores[sinal];
-        let cemPorExtenso = cems;
-        let unidadePorExtenso =  (ums == "") ? "" : `${operadores.conectores}${ums}`;
-        let dezenaPorExtenso = (cems == ""  ) ? dezs: `${operadores.conectores}${dezs}` ;   
-
-        stringConcatenada = `${sinalPorExtenso} ${cemPorExtenso}${dezenaPorExtenso}${unidadePorExtenso}` 
+        grandezaDecomposta = grandezaDecomposta.reverse();
+        ums = numerosBase[grandezaDecomposta[0] || 0];
+        dezs  = dezenas[grandezaDecomposta[1] || 0];
+        cems = centenas[grandezaDecomposta[2] || 0];
+        let centena = cems;
+        let dezena = (cems == "") ? dezs : `${operadores.conectores}${dezs}`;
+        let unidade = (ums == ("" || numerosBase[0])) ? "" : `${operadores.conectores}${ums}`;
+        grandezaPorExtenso = `${centena}${dezena}${unidade}`;        
     }
-    return stringConcatenada;
+    return grandezaPorExtenso;
 }
 
-function souUmaUnidade(numero){
-   return numero <= (unidades.length -1)
+function escreverNumero(grandezaDecomposta) {
+    let grandezaPorExtenso = grandezaDecomposta;
+    if(!Array.isArray(grandezaDecomposta) && souUmNumeroBase(grandezaDecomposta)){
+        grandezaPorExtenso = numerosBase[parseInt(grandezaDecomposta)]
+    } else {
+        grandezaPorExtenso = concatenarNumeros(grandezaDecomposta)
+    }
+
+    return grandezaPorExtenso;
 }
-function souUmNumeroMagico (numero) {
-   return numerosMagicos[numero] != undefined;
+
+function decomporNumero(grandeza) {
+  let numeroDecomposto = grandeza;
+  if (!souUmNumeroBase(parseInt(grandeza)) ) {
+    dezena = grandeza.substring(grandeza.length - ordemDasGrandezas.dezenas,grandeza.length);
+    numeroDecomposto = souUmNumeroBase(dezena) ? [grandeza.substring(0,1), dezena] :  [...grandeza];
+  }
+  return numeroDecomposto;
 }
+
+function decomporEmGradezas(numero) {
+  let numeroEmMilhares = [];
+  while (numero.length > 3) {
+    let milhar = new Array(3);
+    milhar[2] = numero.charAt(numero.length - 1);
+    milhar[1] = numero.charAt(numero.length - 2);
+    milhar[0] = numero.charAt(numero.length - 3);
+    numeroEmMilhares.push(milhar[0] + milhar[1] + milhar[2]);
+    numero = numero.substring(0, numero.length - 3);
+  }
+  numeroEmMilhares.push(numero);
+  return numeroEmMilhares.reverse();
+}
+
+function separarSinalENumero(numero) {
+  sinal = "";
+  if (operadores[numero.substring(0, 1)]) {
+    sinal = numero.substring(0, 1);
+    numero = numero.substring(1);
+  }
+  return [sinal, numero];
+}
+function souUmNumeroBase(numero) {
+  return numerosBase[parseInt(numero)] != undefined;
+}
+
