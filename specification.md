@@ -23,9 +23,6 @@ servidor!
 * Mesmo que não esteja com a lógica completa, nos envie o que 
 conseguiu fazer até o momento. 
 
-Em caso de dúvidas sobre o desafio, mande um email para 
-ept@certi.org.br e mzr@certi.org.br. 
-
 _Bônus_: No GitHub, abra um Pull Request com seu código (p.ex. do 
 seu branch de desenvolvimento para o master). Isso facilita nossa 
 revisão. 
