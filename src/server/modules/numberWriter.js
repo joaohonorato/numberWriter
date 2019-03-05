@@ -9,29 +9,40 @@ const {
 } = require("../utilitario/constantes");
 
 module.exports.execute = function execute(number) {
+  /* Passo 1: Separar número e sinal */
   let [sinal, numero] = separarSinalENumero(number);
+  /* Passo 2: Decompor número em ordens de grandeza  */
   let numeroEmGradezas = decomporEmGradezas(numero);
-  let grandezasMapeadas = numeroEmGradezas.map(numero => decomporNumero(numero));
-  let grandezasPorExtenso = grandezasMapeadas.map(grandeza => escreverNumero(grandeza));
-  console.log("grandezasPorExtenso",grandezasPorExtenso)
-  let numeroPorExtenso = concatenarGrandezas(grandezasPorExtenso);
-  console.log("Numero por extenso:", numeroPorExtenso);
-  return;
+  /* Passo 3: Decompor grandezas e números para escrita */
+  let grandezasMapeadas = numeroEmGradezas.map(decomporNumero);
+  /* Passo 4: Escrever por extenso cada número das grandezas */
+  let grandezasPorExtenso = grandezasMapeadas.map(escreverNumero);
+  /* Passo 5: Concatenar as grandezas inserindo a ordem da grandeza e os conectores necesssários */
+  let numeroPorExtenso = concatenarSinalEGrandezas(sinal,grandezasPorExtenso);
+  /* Passo 6: Retornar número por extenso no formato desejado */
+  return wraper(numeroPorExtenso);
 };
 
-function concatenarGrandezas(grandezasPorExtenso){
-    grandezasComConectores = grandezasPorExtenso.map((grandezaPorExtenso,index, grandezas) => {
-        let ultimoItem = index === grandezas.length -1;
-        if(!ultimoItem  && grandezaPorExtenso === numerosBase[0] ){
-            return "";
-        }else if(ultimoItem && grandezas.length > 1 && grandezas.slice(0,index).every(numero => numero !== numerosBase[0])){
-            return (grandezaPorExtenso === numerosBase[0]) ? " " : `${operadores.conectores}${grandezaPorExtenso}`;
-        } 
-        return ultimoItem ? grandezaPorExtenso : grandezaPorExtenso +" "+ grandezasBase[index];
-    })
-
-    return grandezasComConectores.reduce((acc,numero) =>  acc.concat(numero));
+function wraper(numeroPorExtenso){
+    return JSON.stringify({"extenso" : numeroPorExtenso});
 }
+
+function concatenarSinalEGrandezas(sinal,grandezasPorExtenso){
+    grandezasComConectores = grandezasPorExtenso.map(regrasDeConcatenacaoDeGrandezas)
+    return operadores[sinal] + grandezasComConectores.reduce((acc,numero) =>  acc.concat(numero));
+}
+
+function regrasDeConcatenacaoDeGrandezas(grandezaPorExtenso,index,grandezas) {
+    let ultimoItem = index === grandezas.length -1;
+    if(!ultimoItem  && grandezaPorExtenso === numerosBase[0] ){
+        return "";
+    }else if(ultimoItem && grandezas.length > 1 && grandezas.slice(0,index).every(numero => numero !== numerosBase[0])){
+        return (grandezaPorExtenso === numerosBase[0]) ? " " : `${operadores.conectores}${grandezaPorExtenso}`;
+    } 
+    return ultimoItem ? grandezaPorExtenso : grandezaPorExtenso +" "+ grandezasBase[index];
+}
+
+
 
 function concatenarNumeros(grandezaDecomposta){
     let grandezaPorExtenso = "";
