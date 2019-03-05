@@ -1,101 +1,107 @@
-const grandezas = {
-    "unidades" : "1",
-    "dezenas" : "2",
-    "centenas": "3",
-    "milhares": "4"
-}
-const numerosMagicos = {
-    "" : "",
-    "0":"zero",
-    "1":"um",
-    "2":"dois",
-    "3":"três",
-    "4":"quatro",
-    "5":"cinco",
-    "6":"seis",
-    "7":"sete",
-    "8":"oito",
-    "9":"nove",
-    "10":"dez",
-    "11":"onze",
-    "12":"doze",
-    "13":"treze",
-    "14":"catorze",
-    "15":"quinze",
-    "16":"dezesseis",
-    "17":"dezessete",
-    "18":"dezoito",
-    "19":"dezenove",
-    "20":"vinte",
-    "100": "cem",
-    "666": "O número da besta"
-}
+const ordemDasGrandezas = {
+  unidades: "1",
+  dezenas: "2",
+  centenas: "3",
+  milhares: "4"
+};
+const numerosBase = {
+  "": "",
+  "0": "zero",
+  "1": "um",
+  "2": "dois",
+  "3": "três",
+  "4": "quatro",
+  "5": "cinco",
+  "6": "seis",
+  "7": "sete",
+  "8": "oito",
+  "9": "nove",
+  "10": "dez",
+  "11": "onze",
+  "12": "doze",
+  "13": "treze",
+  "14": "catorze",
+  "15": "quinze",
+  "16": "dezesseis",
+  "17": "dezessete",
+  "18": "dezoito",
+  "19": "dezenove",
+  "100": "cem",
+  "666": "O número da besta"
+};
 
 const operadores = {
-    "" : "",
-    "-" : "menos",
-    "conectores": " e ",
-}
+  "": "",
+  "-": "menos",
+  conectores: " e "
+};
 
-const unidades = [
-   "",
-   "um",
-   "dois",
-   "três",
-   "quatro",
-   "cinco",
-   "seis",
-   "sete",
-   "oito",
-   "nove",
-   "dez",
-   "onze",
-   "doze",
-   "treze",
-   "catorze",
-   "quinze",
-   "dezesseis",
-   "dezessete",
-   "dezoito",
-   "dezenove",
-]
+const numeros = [
+  "",
+  "um",
+  "dois",
+  "três",
+  "quatro",
+  "cinco",
+  "seis",
+  "sete",
+  "oito",
+  "nove",
+  "dez",
+  "onze",
+  "doze",
+  "treze",
+  "catorze",
+  "quinze",
+  "dezesseis",
+  "dezessete",
+  "dezoito",
+  "dezenove"
+];
 
 const dezenas = [
-     "",
-     "",
-     "vinte",
-     "trinta",
-     "quarenta",
-     "cinquenta",
-     "sessenta",
-     "setenta",
-     "oitenta",
-     "noventa"      
-]
+  "",
+  "",
+  "vinte",
+  "trinta",
+  "quarenta",
+  "cinquenta",
+  "sessenta",
+  "setenta",
+  "oitenta",
+  "noventa"
+];
 
 const centenas = [
-   "",
-   "cento",
-   "duzentos",
-   "trezentos",
-   "quatrocentos",
-   "quinhentos",
-   "seiscentos",
-   "setecentos",
-   "oitocentos",
-   "novecentos"
-]
+  "",
+  "cento",
+  "duzentos",
+  "trezentos",
+  "quatrocentos",
+  "quinhentos",
+  "seiscentos",
+  "setecentos",
+  "oitocentos",
+  "novecentos"
+];
 
+ const grandezasBase = [
+    "mil",
+    "milhão",
+    "bilhão",
+    "trilhão",
+    "quatrilhão",
+    "quintilhão",
+    "sextilhão",
+    "setilhão"  
+ ]
 
-/* const numberOrderSingular = {
-    "3"     : "mil",
-    "6"     : "milhão",
-    "9"     : "bilhão",
-    "12"    : "trilhão",
-    "15"    : "quatrilhão",
-    "18"    : "quintilhão",
-    "21"    : "sextilhão",
-    "24"    : "setilhão"  
-} */
-
-module.exports = { numerosMagicos,unidades, dezenas,centenas, operadores,grandezas};
+module.exports = {
+  numerosBase,
+  grandezasBase,
+  numeros,
+  dezenas,
+  centenas,
+  operadores,
+  ordemDasGrandezas
+};
