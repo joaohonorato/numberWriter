@@ -1,11 +1,8 @@
 const {numerosMagicos,unidades, dezenas, centenas,operadores,grandezas} = require('../utilitario/constantes')
 
 module.exports.execute = function execute(number){
-    let [sinal, numero] = separarSinalENumero(number)
-    console.log("sinal",sinal,"numero",numero)
     return escreverPorExtenso(...decomporMilhar(...separarSinalENumero(number)));
 }
-
 
 function separarSinalENumero(numero){
     sinal = "";
@@ -35,6 +32,7 @@ function escreverPorExtenso(sinal, numero){
     } else {
         numeroPorExtenso = concatenar(sinal, numero)    
      }
+    /*  console.log("numeroPorExtenso",numeroPorExtenso) */
     return numeroPorExtenso
 }   
 
@@ -61,13 +59,8 @@ function concatenar(...arg){
 
         stringConcatenada = `${sinalPorExtenso} ${cemPorExtenso}${dezenaPorExtenso}${unidadePorExtenso}` 
     }
-    console.log("stringConcatenada",stringConcatenada);
     return stringConcatenada;
 }
-
-function souEspecial(numero){
-    return souUmaUnidade(numero) || souUmNumeroMagico (numero);
-} 
 
 function souUmaUnidade(numero){
    return numero <= (unidades.length -1)
