@@ -1,10 +1,17 @@
 const http = require('http');
 const { handleRequest } = require('../app/handleRequest')
-const PORT = process.env.PORT || 3000;
-const HOST = "localhost";
+const {HOST,PORT} = require('../app/config');
+module.exports.configure = function configure(config){
+    this.config = config;
+    this.run = run;
+    return this;
+}
 
+/* Roda a aplicação e o gerenciador de servicos */
+function run(){
+    /* Criando Servidor e informando sua criação*/
+    http.createServer((req,res,next) => handleRequest(req,res,next),console.log("Servidor node/http criado!"))
+    /* Informando que o servidor está escutando no HOST e PORT definidos */
+    .listen(this.config.PORT, this.config.HOST, () => console.log(`Servidor rodando e escutando em http://${HOST}:${PORT}`));
+}
 
-/* Criando Servidor e informando sua criação*/
-http.createServer((req,res,next) => handleRequest(req,res,next),console.log("Servidor node/http criado!"))
-/* Informando que o servidor está escutando no HOST e PORT definidos */
-.listen(PORT, HOST, () => console.log(`Servidor rodando e escutando em http://${HOST}:${PORT}`));

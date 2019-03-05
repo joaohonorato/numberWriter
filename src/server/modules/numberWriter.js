@@ -1,30 +1,70 @@
-const {unidades, dezenas} = require('../utilitario/constantes')
+const {numerosMagicos,unidades, dezenas, centenas,operadores,grandezas} = require('../utilitario/constantes')
 
-module.exports.write  = (number) => {
-    let output = [];
-    if(number < 20){
-      return unidades[number];
-    } else {
-        output = decompose(number);
-    }
-    return dezenas[output[1]] + " e " + unidades[output[0]];
-} 
-
-function decompose(number) {
-    return [...number].reverse();
+module.exports.execute = function execute(number){
+    return escreverPorExtenso(...decomporMilhar(...separarSinalENumero(number)));
 }
 
+function separarSinalENumero(numero){
+    sinal = "";
+    if(operadores[numero.substring(0,1)]){
+        sinal = numero.substring(0,1);
+        numero = numero.substring(1);
+    }
+    return [sinal, numero];
+}
 
+function decomporMilhar(sinal, numero) {    
+    let numeroEspecial = [];
+    ultimosDois = numero.substring(numero.length -grandezas.dezenas ,numero.length)
+    if(souUmNumeroMagico(numero)){
+        return [sinal,numero]
+    } else if (souUmaUnidade(ultimosDois)){
+        numeroEspecial = ultimosDois;
+        numero = numero.substring(0,numero.length -grandezas.dezenas);
+    }
+    return numeroEspecial.length != 0 ? [sinal,[...numero , numeroEspecial]] :  [sinal,[...numero]];
+}
 
-/* 
-    Idéia geral:
-    1)Criar uma função que lê os números de 3 em 3, de 0 à 999
-        1.1) essa função se repetira quando a ordem de grandeza aumentar
-        1.2)[ 1, 19 ] => direto
-        1.3)[20,999] => decompor => parse => direto
-    2)Tratar do sinal de menos, e de como entregar o json no formato correto.    
-    3)Decompor o número em parcelas de 3 em 3, neste caso será  nó máximo 2 e 3, 
-    mas que cuidará disso será nosso requestHandler, essa função não será 
-    necessariamente limitada a especificação do intervalo
-    4) Tratar os valores decompostos, transformando em número por extenso. 
-*/
+function escreverPorExtenso(sinal, numero){
+    let numeroPorExtenso = "";
+    if(souUmNumeroMagico(numero)){
+        numeroPorExtenso = `${operadores[sinal]} ${numerosMagicos[numero]}`; 
+    } else {
+        numeroPorExtenso = concatenar(sinal, numero)    
+     }
+    /*  console.log("numeroPorExtenso",numeroPorExtenso) */
+    return numeroPorExtenso
+}   
+
+function concatenar(...arg){
+    let [sinal, numeroComposto] = arg;
+    let stringConcatenada = "";
+    if(numeroComposto[numeroComposto.length -1].length == 2){
+        unidadesComoDezena = numeroComposto[arg.length - 1]
+        centena = numeroComposto[0]
+        if(parseInt(unidadesComoDezena) === 0){
+            stringConcatenada = `${operadores[sinal]} ${centenas[centena]}`
+        } else {
+            stringConcatenada = `${operadores[sinal]} ${centenas[centena]}${operadores.conectores}${unidades[parseInt(unidadesComoDezena)]}`;
+        }
+    } else{
+        numeroComposto = numeroComposto.reverse();
+        ums  = unidades[numeroComposto[0] || 0];
+        dezs = dezenas [numeroComposto[1] || 0];
+        cems = centenas[numeroComposto[2] || 0];
+        let sinalPorExtenso = operadores[sinal];
+        let cemPorExtenso = cems;
+        let unidadePorExtenso =  (ums == "") ? "" : `${operadores.conectores}${ums}`;
+        let dezenaPorExtenso = (cems == ""  ) ? dezs: `${operadores.conectores}${dezs}` ;   
+
+        stringConcatenada = `${sinalPorExtenso} ${cemPorExtenso}${dezenaPorExtenso}${unidadePorExtenso}` 
+    }
+    return stringConcatenada;
+}
+
+function souUmaUnidade(numero){
+   return numero <= (unidades.length -1)
+}
+function souUmNumeroMagico (numero) {
+   return numerosMagicos[numero] != undefined;
+}

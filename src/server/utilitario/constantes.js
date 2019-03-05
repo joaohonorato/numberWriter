@@ -1,40 +1,90 @@
-const unidades = {
-    "0"     : "",
-    "1"     : "um",
-    "2"     : "dois",
-    "3"     : "três",
-    "4"     : "quatro",
-    "5"     : "cinco",
-    "6"     : "seis",
-    "7"     : "sete",
-    "8"     : "oito",
-    "9"     : "nove",
-    "10"    : "dez",
-    "11"    : "onze",
-    "12"    : "doze",
-    "13"    : "treze",
-    "14"    : "catorze",
-    "15"    : "quinze",
-    "16"    : "dezesseis",
-    "17"    : "dezessete",
-    "18"    : "dezoito",
-    "19"    : "dezenove",
+const grandezas = {
+    "unidades" : "1",
+    "dezenas" : "2",
+    "centenas": "3",
+    "milhares": "4"
+}
+const numerosMagicos = {
+    "" : "",
+    "0":"zero",
+    "1":"um",
+    "2":"dois",
+    "3":"três",
+    "4":"quatro",
+    "5":"cinco",
+    "6":"seis",
+    "7":"sete",
+    "8":"oito",
+    "9":"nove",
+    "10":"dez",
+    "11":"onze",
+    "12":"doze",
+    "13":"treze",
+    "14":"catorze",
+    "15":"quinze",
+    "16":"dezesseis",
+    "17":"dezessete",
+    "18":"dezoito",
+    "19":"dezenove",
+    "20":"vinte",
+    "100": "cem",
+    "666": "O número da besta"
 }
 
-const dezenas = {
-    "0"     : "",
-    "1"     : "",
-    "2"     : "vinte",
-    "3"     : "trinta",
-    "4"     : "quarenta",
-    "5"     : "cinquenta",
-    "6"     : "sessenta",
-    "7"     : "setenta",
-    "8"     : "oitenta",
-    "9"     : "noventa"      
+const operadores = {
+    "" : "",
+    "-" : "menos",
+    "conectores": " e ",
 }
 
-const centena = "cem"
+const unidades = [
+   "",
+   "um",
+   "dois",
+   "três",
+   "quatro",
+   "cinco",
+   "seis",
+   "sete",
+   "oito",
+   "nove",
+   "dez",
+   "onze",
+   "doze",
+   "treze",
+   "catorze",
+   "quinze",
+   "dezesseis",
+   "dezessete",
+   "dezoito",
+   "dezenove",
+]
+
+const dezenas = [
+     "",
+     "",
+     "vinte",
+     "trinta",
+     "quarenta",
+     "cinquenta",
+     "sessenta",
+     "setenta",
+     "oitenta",
+     "noventa"      
+]
+
+const centenas = [
+   "",
+   "cento",
+   "duzentos",
+   "trezentos",
+   "quatrocentos",
+   "quinhentos",
+   "seiscentos",
+   "setecentos",
+   "oitocentos",
+   "novecentos"
+]
 
 
 /* const numberOrderSingular = {
@@ -48,4 +98,4 @@ const centena = "cem"
     "24"    : "setilhão"  
 } */
 
-module.exports = { unidades, dezenas,centena };
+module.exports = { numerosMagicos,unidades, dezenas,centenas, operadores,grandezas};
