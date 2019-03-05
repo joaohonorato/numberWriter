@@ -32,7 +32,7 @@ const numerosBase = {
 
 const operadores = {
   "": "",
-  "-": "menos",
+  "-": "menos ",
   conectores: " e "
 };
 

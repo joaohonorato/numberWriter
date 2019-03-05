@@ -1,62 +1,55 @@
 const routes = require('../app/routes');
-const numberWriter = require('../modules/numberWriter')
 const URL = require('url').URL;
-const events = require('events');
-const {HOST,PORT} = require('../app/config');
+const {HOST,PORT,defaults,intervalo} = require('../app/config');
 
 
-module.exports.handleRequest = (req,res) => {
-    res.writeHead(200, { 'content-type': 'application/json; charset=utf-8' });
-    let urlPath = new URL(req.url, `http://${HOST}:${PORT}`).pathname;   
-    let rota = routes.filter(r => urlPath.match(r.regex))[0]    
-    if(rota && req.method == 'GET'){
-        let urlParam = urlPath != undefined ? urlPath.substring(1) : "";
-        try{
-            let mod = require(rota.moduleDir);
-            mod.execute(urlParam);
-            res.end();
-        }catch (e){
-            console.log(e);
-            res.write("\n\nNão foi possível processar o seu request\n" + e);
-            res.end();
+module.exports.handleRequest = (req,res) => { 
+    try{
+        let urlPath = new URL(req.url, `http://${HOST}:${PORT}`).pathname; 
+        let rota = routes.filter(r => urlPath.match(r.regex))[0];
+        if(rota && req.method == 'GET'){
+            getHandler(urlPath,rota,res);
+        }else if (rota && req.method == 'POST') {
+            postHandler(req,res);
+        }else if(req.url ==='/'){
+            welcome(req,res);
+        }else {
+            noResponse(req,res);
         }
-    }else{
-        noResponse(req,res);
+    }catch (e){
+        console.log(e);
+        res.write("Não foi possível processar o seu request\n" + e);
+        res.end();
     }
-    
-/* 
-    if(urlPath.match(routes.homepage.regex)){    
-        welcome(req,res);
-    }else if(urlPath.match(routes.numberwriter.regex)){
-        req.method == 'GET' ? getHandler(urlPath, res) 
-      :(req.method == 'POST' ? postHandler(req,res, urlPath) 
-      : noResponse(req,res));      
-    } else {    
-        noResponse(req,res);
-    } */
 }
 
-/*  curl -v http://localhost:3000/1 */
+/*  curl -s http://localhost:3000/1 */
 /** Handler GET request */
-getHandler = (path, res) => {
-    let numberToFull = {"extenso": numberWriter.execute(path.substring(1))}
-    res.write("\n\n"+JSON.stringify(numberToFull));
+getHandler = (urlPath,rota, res) => { 
+    res.writeHead(defaults.response.statusCode , defaults.response.headers);
+    let urlParam = urlPath != undefined ? urlPath.substring(1) : "";
+    let mod = require(rota.moduleDir);
+    res.write(`${mod.execute(urlParam)}`);
+    res.end();
+    
 }
-/*  curl -d "1" POST http://localhost:3000/1 */
+/*  curl -sd "1" POST http://localhost:3000/1 */
 /** Handler POST request */
 postHandler = (req, res) => {
+    res.writeHead(defaults.response.statusCode , defaults.response.headers);
     req.on('data', (chunk) => {
-        let numberToFull = {"extenso": numberWriter.write(chunk)}
-        res.write("\n\n"+JSON.stringify(numberToFull));
+        let mod = require(rota.moduleDir);
+        res.write(`\n${mod.execute(chunk)}`);
         res.end();;
     });
 }
 
-/** Handler to homepage */
+/** Handler quando não encontra-se rota adequada */
 noResponse = (req, res) => {
+    res.writeHead(defaults.response.statusCode , defaults.response.headers);
     let example = getRandomInt();    
     res.write(`
-O escritor aceita somente números no intervalo [-99999,99999].
+O escritor aceita somente números no intervalo [${intervalo.min},${intervalo.max}].
 Por favor, informe uma entrada válida.
 Por exemplo para o número ${example}:   http://localhost/${example}`);
     res.end();
@@ -64,8 +57,8 @@ Por exemplo para o número ${example}:   http://localhost/${example}`);
 
 /** Handler welcome */
 welcome = (req, res) => {  
+    res.writeHead(defaults.response.statusCode , defaults.response.headers);
     let example = getRandomInt();   
-    res.writeHead(200, { 'content-type': 'application/json; charset=utf-8' });
     res.write(`
 Bem vindo ao escritor de número por extenso, exemplos de uso:
 O número 21 :   http://localhost/21
@@ -76,7 +69,7 @@ Resposta   : {"extenso":"menos vinte e um"}`);
 }
 
 function getRandomInt() {
-    min = Math.ceil(-99999);
-    max = Math.floor(99999);
+    min = Math.ceil(intervalo.min);
+    max = Math.floor(intervalo.max);
     return Math.floor(Math.random() * (max - min)) + min;
   }

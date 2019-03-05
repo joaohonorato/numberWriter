@@ -7,11 +7,11 @@ module.exports.configure = function configure(config){
     return this;
 }
 
-/* Roda a aplicação e o gerenciador de servicos */
+/* Roda a aplicação */
 function run(){
-    /* Criando Servidor e informando sua criação*/
+    /* Cria Servidor e informa sua criação*/
     http.createServer((req,res,next) => handleRequest(req,res,next),console.log("Servidor node/http criado!"))
-    /* Informando que o servidor está escutando no HOST e PORT definidos */
+    /* Informa que o servidor está escutando no HOST e PORT definidos */
     .listen(this.config.PORT, this.config.HOST, () => console.log(`Servidor rodando e escutando em http://${HOST}:${PORT}`));
 }
 
