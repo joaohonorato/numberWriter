@@ -1,12 +1,30 @@
 const routes = require('../app/routes');
 const numberWriter = require('../modules/numberWriter')
 const URL = require('url').URL;
+const events = require('events');
 const {HOST,PORT} = require('../app/config');
 
 
-module.exports.handleRequest = (req,res,next) => {
+module.exports.handleRequest = (req,res) => {
     res.writeHead(200, { 'content-type': 'application/json; charset=utf-8' });
     let urlPath = new URL(req.url, `http://${HOST}:${PORT}`).pathname;   
+    let rota = routes.filter(r => urlPath.match(r.regex))[0]    
+    if(rota && req.method == 'GET'){
+        let urlParam = urlPath != undefined ? urlPath.substring(1) : "";
+        try{
+            let mod = require(rota.moduleDir);
+            mod.execute(urlParam);
+            res.end();
+        }catch (e){
+            console.log(e);
+            res.write("\n\nNão foi possível processar o seu request\n" + e);
+            res.end();
+        }
+    }else{
+        noResponse(req,res);
+    }
+    
+/* 
     if(urlPath.match(routes.homepage.regex)){    
         welcome(req,res);
     }else if(urlPath.match(routes.numberwriter.regex)){
@@ -15,17 +33,16 @@ module.exports.handleRequest = (req,res,next) => {
       : noResponse(req,res));      
     } else {    
         noResponse(req,res);
-    }
+    } */
 }
 
 /*  curl -v http://localhost:3000/1 */
 /** Handler GET request */
 getHandler = (path, res) => {
-    let numberToFull = {"extenso": numberWriter.write(path.substring(1))}
+    let numberToFull = {"extenso": numberWriter.execute(path.substring(1))}
     res.write("\n\n"+JSON.stringify(numberToFull));
-    res.end();
 }
-/*  curl -v -d "1" -X POST http://localhost:3000/1 */
+/*  curl -d "1" POST http://localhost:3000/1 */
 /** Handler POST request */
 postHandler = (req, res) => {
     req.on('data', (chunk) => {
@@ -35,7 +52,7 @@ postHandler = (req, res) => {
     });
 }
 
-/** Handler no mapping */
+/** Handler to homepage */
 noResponse = (req, res) => {
     let example = getRandomInt();    
     res.write(`
@@ -45,7 +62,7 @@ Por exemplo para o número ${example}:   http://localhost/${example}`);
     res.end();
 }
 
-/** Handler no mapping */
+/** Handler welcome */
 welcome = (req, res) => {  
     let example = getRandomInt();   
     res.writeHead(200, { 'content-type': 'application/json; charset=utf-8' });

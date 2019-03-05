@@ -1,36 +1,77 @@
-const {numerosMagicos,unidades, dezenas, centenas,operadores} = require('../utilitario/constantes')
+const {numerosMagicos,unidades, dezenas, centenas,operadores,grandezas} = require('../utilitario/constantes')
 
-module.exports.write  = (number) => {
-    let output = [];
-    let sign = "";
-    /* Valida o sinal do número */
-    if(operadores[number.substring(0,1)]){
-        sign = operadores[number.substring(0,1)];
-        number = number.substring(1);
+module.exports.execute = function execute(number){
+    let [sinal, numero] = separarSinalENumero(number)
+    console.log("sinal",sinal,"numero",numero)
+    return escreverPorExtenso(...decomporMilhar(...separarSinalENumero(number)));
+}
+
+
+function separarSinalENumero(numero){
+    sinal = "";
+    if(operadores[numero.substring(0,1)]){
+        sinal = numero.substring(0,1);
+        numero = numero.substring(1);
     }
-    /* Verifica se é um numero esdruxulo (0 e 100) e fornece tratamento diferenciado */
-    if(numerosMagicos[number]){
-       return sign + numerosMagicos[number]; 
-    } 
-    /* Verifica se é um numero entre 0 e 19 e printa diretamente o número, pode se optar por incluir o 20*/
-    /* Retorna o número por extenso caso match direto */
-    else if(number < 20){
-      return sign + unidades[parseInt(number,10)];
-    } 
-    /* Caso número maior que 20, decompõe o número em partes, milhares, centenas, dezenas e unidades */
-    else {
-        output = decompose(number);
+    return [sinal, numero];
+}
+
+function decomporMilhar(sinal, numero) {    
+    let numeroEspecial = [];
+    ultimosDois = numero.substring(numero.length -grandezas.dezenas ,numero.length)
+    if(souUmNumeroMagico(numero)){
+        return [sinal,numero]
+    } else if (souUmaUnidade(ultimosDois)){
+        numeroEspecial = ultimosDois;
+        numero = numero.substring(0,numero.length -grandezas.dezenas);
     }
-    /* Prepara o número em texto para exibição */
-    cems = centenas[output[2] || 0];
-    dezs = dezenas [output[1] || 0];
-    ums  = unidades[output[0] || 0];
-    output = sign + (cems ? cems + operadores.conectores : "") + (dezs ? dezs + operadores.conectores : "") + ums;
-    
+    return numeroEspecial.length != 0 ? [sinal,[...numero , numeroEspecial]] :  [sinal,[...numero]];
+}
 
-    return output
-    } 
+function escreverPorExtenso(sinal, numero){
+    let numeroPorExtenso = "";
+    if(souUmNumeroMagico(numero)){
+        numeroPorExtenso = `${operadores[sinal]} ${numerosMagicos[numero]}`; 
+    } else {
+        numeroPorExtenso = concatenar(sinal, numero)    
+     }
+    return numeroPorExtenso
+}   
 
-function decompose(number) {
-    return [...number].reverse();
+function concatenar(...arg){
+    let [sinal, numeroComposto] = arg;
+    let stringConcatenada = "";
+    if(numeroComposto[numeroComposto.length -1].length == 2){
+        unidadesComoDezena = numeroComposto[arg.length - 1]
+        centena = numeroComposto[0]
+        if(parseInt(unidadesComoDezena) === 0){
+            stringConcatenada = `${operadores[sinal]} ${centenas[centena]}`
+        } else {
+            stringConcatenada = `${operadores[sinal]} ${centenas[centena]}${operadores.conectores}${unidades[parseInt(unidadesComoDezena)]}`;
+        }
+    } else{
+        numeroComposto = numeroComposto.reverse();
+        ums  = unidades[numeroComposto[0] || 0];
+        dezs = dezenas [numeroComposto[1] || 0];
+        cems = centenas[numeroComposto[2] || 0];
+        let sinalPorExtenso = operadores[sinal];
+        let cemPorExtenso = cems;
+        let unidadePorExtenso =  (ums == "") ? "" : `${operadores.conectores}${ums}`;
+        let dezenaPorExtenso = (cems == ""  ) ? dezs: `${operadores.conectores}${dezs}` ;   
+
+        stringConcatenada = `${sinalPorExtenso} ${cemPorExtenso}${dezenaPorExtenso}${unidadePorExtenso}` 
+    }
+    console.log("stringConcatenada",stringConcatenada);
+    return stringConcatenada;
+}
+
+function souEspecial(numero){
+    return souUmaUnidade(numero) || souUmNumeroMagico (numero);
+} 
+
+function souUmaUnidade(numero){
+   return numero <= (unidades.length -1)
+}
+function souUmNumeroMagico (numero) {
+   return numerosMagicos[numero] != undefined;
 }
