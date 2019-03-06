@@ -33,7 +33,8 @@ const numerosBase = {
 const operadores = {
   "": "",
   "-": "menos ",
-  conectores: " e "
+  "espaco": " ",
+  "conectores": " e "
 };
 
 const numeros = [

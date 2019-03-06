@@ -1,6 +1,6 @@
 FROM node:alpine
 
-WORKDIR /usr/certi
+WORKDIR /usr/certi/
 
 COPY package*.json ./
 RUN npm install
