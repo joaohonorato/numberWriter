@@ -27,7 +27,6 @@ const numerosBase = {
   "18": "dezoito",
   "19": "dezenove",
   "100": "cem",
-  "666": "O número da besta"
 };
 
 const operadores = {
@@ -37,28 +36,6 @@ const operadores = {
   "conectores": " e "
 };
 
-const numeros = [
-  "",
-  "um",
-  "dois",
-  "três",
-  "quatro",
-  "cinco",
-  "seis",
-  "sete",
-  "oito",
-  "nove",
-  "dez",
-  "onze",
-  "doze",
-  "treze",
-  "catorze",
-  "quinze",
-  "dezesseis",
-  "dezessete",
-  "dezoito",
-  "dezenove"
-];
 
 const dezenas = [
   "",
@@ -100,7 +77,6 @@ const centenas = [
 module.exports = {
   numerosBase,
   grandezasBase,
-  numeros,
   dezenas,
   centenas,
   operadores,
