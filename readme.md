@@ -1,6 +1,18 @@
 # numberWriter
+Escritor de números por extenso
 
-Leitor de números por extenso
+A aplicação subirá um servidor node/http na porta 3000, e teremos os seguintes roteamentos :
+
+* curl -s http://localhost:3000/
+    Retorna uma **mensagem** de boas vidas.
+* curl -s "1" POST http://localhost:3000/:number
+    Retorna o número como um objeto json em formato de string
+    Aceita números de (-99999,99999)
+* Qualquer outro endereço
+    Retorna uma **mensagem** de amigável de erro.
+
+Obs: As **mensagens** não estão com formato json
+
 
 ## Getting Started
 
@@ -9,11 +21,16 @@ Instruções de como rodar a aplicação em ambiente de desenvolvimento e teste.
 ### Prerequisites
 
 É necessário ter o seguinte programa instalado:
+
+Node.js 
+```
+npm start.
 ```
 Docker
     - docker
     - docker-machine
-    - docker-compose
+```
+[Instruções](https://github.com/joaohonorato/numberWriter#installing)
 ```
 
 ### Installing
@@ -46,10 +63,10 @@ docker build -t certi/numbereader .
 docker run -p 3000:3000 -d certi/numbereader
 
 ```
-Ou simplesmente rode:
+Se tiver docker compose instaldo em sua máquina, basta rodar:
 
 ```
-docker-compose up
+docker-compose up -d
 ```
 
 ## Deployment

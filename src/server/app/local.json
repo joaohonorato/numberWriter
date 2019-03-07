@@ -14,6 +14,7 @@
         }
     },
     "mensagens":{
-        "boasVindas":"Bem vindo ao escritor de número por extenso, exemplos de uso:\nO número 21 :\thttp://localhost/21\nResposta    :\t{\"extenso\":\"vinte e um\"}\nO número -21:\thttp://localhost/-21\nResposta    :\t{\"extenso\":\"menos vinte e um\"}"         
+        "boasVindas":"Bem vindo ao escritor de número por extenso, exemplos de uso:\nO número 21 :\thttp://localhost/21\nResposta    :\t{\"extenso\":\"vinte e um\"}\nO número -21:\thttp://localhost/-21\nResposta    :\t{\"extenso\":\"menos vinte e um\"}",
+        "error":  "Não foi possível processar o seu request\n"      
     }
 }
