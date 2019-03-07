@@ -4,8 +4,7 @@ const {HOST,PORT,defaults,intervalo} = require('../app/config');
 
 
 module.exports.handleRequest = (req,res) => { 
-    try{
-        res.writeHead(defaults.response.statusCode , defaults.response.headers);
+    try{ 
         let urlPath = new URL(req.url, `http://${HOST}:${PORT}`).pathname; 
         let rota = routes.filter(r => urlPath.match(r.regex))[0];
         if(rota && req.method == 'GET'){
@@ -19,6 +18,7 @@ module.exports.handleRequest = (req,res) => {
         }
     }catch (e){
         console.log(e);
+        res.writeHead(defaults.response.statusCode.erroInterno,defaults.response.headers);
         res.write("Não foi possível processar o seu request\n" + e);
     }finally{
         res.end();
@@ -28,6 +28,7 @@ module.exports.handleRequest = (req,res) => {
 /*  curl -s http://localhost:3000/1 */
 /** Handler GET request */
 getHandler = (urlPath,rota, res) => {
+    res.writeHead(defaults.response.statusCode.ok,defaults.response.headers);
     let urlParam = urlPath != undefined ? urlPath.substring(1) : "";
     let mod = require(rota.moduleDir);
     res.write(`${mod.execute(urlParam)}`);
@@ -36,6 +37,7 @@ getHandler = (urlPath,rota, res) => {
 /*  curl -sd "1" POST http://localhost:3000/1 */
 /** Handler POST request */
 postHandler = (req, res) => {
+    res.writeHead(defaults.response.statusCode.ok,defaults.response.headers);
     req.on('data', (chunk) => {
         console.log("chunkando!");
         let mod = require(rota.moduleDir);
@@ -45,6 +47,7 @@ postHandler = (req, res) => {
 
 /** Handler sem rota */
 noResponse = (req, res) => {
+    res.writeHead(defaults.response.statusCode.naoAceito,defaults.response.headers);
     let example = getRandomInt();    
     res.write(`
 O escritor aceita somente números no intervalo [${intervalo.min},${intervalo.max}].
@@ -55,7 +58,7 @@ Por exemplo para o número ${example}:   http://localhost/${example}`
 
 /** Handler boas vindas */
 welcome = (req, res) => {  
-    res.writeHead(defaults.response.statusCode , defaults.response.headers);
+    res.writeHead(defaults.response.statusCode.ok,defaults.response.headers);
     let example = getRandomInt();   
     res.write(`
 Bem vindo ao escritor de número por extenso, exemplos de uso:
@@ -69,4 +72,4 @@ function getRandomInt() {
     min = Math.ceil(intervalo.min);
     max = Math.floor(intervalo.max);
     return Math.floor(Math.random() * (max - min)) + min;
-  }
+}

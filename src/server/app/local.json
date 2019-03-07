@@ -7,7 +7,11 @@
     },
     "defaults": {
         "response": {
-            "statusCode": 200,
+            "statusCode": {
+                "ok" : 200,
+                "naoAceito": 406,
+                "erroInterno":500
+            },
             "headers": {
                 "content-type":["application/json", "charset=utf-8"]
             }
