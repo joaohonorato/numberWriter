@@ -1,7 +1,6 @@
 const {
   numerosBase,
   grandezasBase,
-  numeros,
   dezenas,
   centenas,
   operadores,
@@ -67,7 +66,7 @@ function concatenarNumeros(grandezaDecomposta){
       let centena = cems;
       let dezena = (cems == "") ? dezs : `${operadores.conectores}${dezs}`;
       let unidade = (ums == ("" || numerosBase[0])) ? "" : `${operadores.conectores}${ums}`;
-      grandezaPorExtenso = `${centena}${dezena}${unidade}`;        
+      grandezaPorExtenso = `${centena}${dezena}${unidade}`;       
   }
   return grandezaPorExtenso;
 }
@@ -110,10 +109,14 @@ function escreverNumero(grandezaDecomposta) {
 function regrasDeConcatenacaoDeGrandezas(grandezaPorExtenso,index,grandezas) {
     let ultimoItem = index === grandezas.length -1;
     if(!ultimoItem  && grandezaPorExtenso === numerosBase[0] ){
+      console.log("a")
         return numerosBase.vazio;
     }else if(ultimoItem && grandezas.length > 1 && grandezas.slice(0,index).every(numero => numero !== numerosBase[0])){
-        return (grandezaPorExtenso === numerosBase[0]) ? operadores.espaco : `${operadores.conectores}${grandezaPorExtenso}`;
+      
+      console.log("b") 
+      return (grandezaPorExtenso === numerosBase[0]) ? operadores[""] : `${operadores.conectores}${grandezaPorExtenso}`;
     } 
+    console.log("c")
     return ultimoItem ? grandezaPorExtenso : grandezaPorExtenso +operadores.espaco + grandezasBase[index];
 }
 

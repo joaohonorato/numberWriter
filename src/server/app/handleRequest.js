@@ -27,7 +27,7 @@ module.exports.handleRequest = (req,res) => {
 
 /*  curl -s http://localhost:3000/1 */
 /** Handler GET request */
-getHandler = (urlPath,rota, res) => { 
+getHandler = (urlPath,rota, res) => {
     let urlParam = urlPath != undefined ? urlPath.substring(1) : "";
     let mod = require(rota.moduleDir);
     res.write(`${mod.execute(urlParam)}`);
@@ -37,6 +37,7 @@ getHandler = (urlPath,rota, res) => {
 /** Handler POST request */
 postHandler = (req, res) => {
     req.on('data', (chunk) => {
+        console.log("chunkando!");
         let mod = require(rota.moduleDir);
         res.write(`\n${mod.execute(chunk)}`);
     });
