@@ -109,14 +109,11 @@ function escreverNumero(grandezaDecomposta) {
 function regrasDeConcatenacaoDeGrandezas(grandezaPorExtenso,index,grandezas) {
     let ultimoItem = index === grandezas.length -1;
     if(!ultimoItem  && grandezaPorExtenso === numerosBase[0] ){
-      console.log("a")
         return numerosBase.vazio;
     }else if(ultimoItem && grandezas.length > 1 && grandezas.slice(0,index).every(numero => numero !== numerosBase[0])){
-      
-      console.log("b") 
+
       return (grandezaPorExtenso === numerosBase[0]) ? operadores[""] : `${operadores.conectores}${grandezaPorExtenso}`;
     } 
-    console.log("c")
     return ultimoItem ? grandezaPorExtenso : grandezaPorExtenso +operadores.espaco + grandezasBase[index];
 }
 
@@ -134,5 +131,5 @@ function souUmNumeroBase(numero) {
 }
 
 function wraper(numeroPorExtenso){
-  return JSON.stringify({"extenso" : numeroPorExtenso});
+  return JSON.stringify({"extenso" : numeroPorExtenso},null,' ');
 }
