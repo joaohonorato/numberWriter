@@ -72,8 +72,19 @@ function concatenarNumeros(grandezaDecomposta){
 }
 
 function concatenarSinalEGrandezas(sinal,grandezasPorExtenso){
-    grandezasComConectores = grandezasPorExtenso.map(regrasDeConcatenacaoDeGrandezas)
+    grandezasComConectores = grandezasPorExtenso.map(regrasDeConcatenacaoDeGrandezas).map((el) => el === undefined ? "" : el)
     return operadores[sinal] + grandezasComConectores.reduce((acc,numero) =>  acc.concat(numero));
+}
+
+function regrasDeConcatenacaoDeGrandezas(grandezaPorExtenso,index,grandezas) {
+  let ultimoItem = index === grandezas.length -1;
+  if(!ultimoItem  && grandezaPorExtenso === numerosBase[0] ){
+      return numerosBase.vazio;
+  }else if(ultimoItem && grandezas.length > 1 && grandezas.slice(0,index).every(numero => numero !== numerosBase[0])){
+
+    return (grandezaPorExtenso === numerosBase[0]) ? operadores[""] : `${operadores.conectores}${grandezaPorExtenso}`;
+  } 
+  return ultimoItem ? grandezaPorExtenso : grandezaPorExtenso +operadores.espaco + grandezasBase[index];
 }
 
 function decomporNumero(grandeza) {
@@ -106,19 +117,7 @@ function escreverNumero(grandezaDecomposta) {
   return grandezaPorExtenso;
 }
 
-function regrasDeConcatenacaoDeGrandezas(grandezaPorExtenso,index,grandezas) {
-    let ultimoItem = index === grandezas.length -1;
-    if(!ultimoItem  && grandezaPorExtenso === numerosBase[0] ){
-      console.log("a")
-        return numerosBase.vazio;
-    }else if(ultimoItem && grandezas.length > 1 && grandezas.slice(0,index).every(numero => numero !== numerosBase[0])){
-      
-      console.log("b") 
-      return (grandezaPorExtenso === numerosBase[0]) ? operadores[""] : `${operadores.conectores}${grandezaPorExtenso}`;
-    } 
-    console.log("c")
-    return ultimoItem ? grandezaPorExtenso : grandezaPorExtenso +operadores.espaco + grandezasBase[index];
-}
+
 
 function separarSinalENumero(numero) {
   sinal = "";
@@ -134,5 +133,5 @@ function souUmNumeroBase(numero) {
 }
 
 function wraper(numeroPorExtenso){
-  return JSON.stringify({"extenso" : numeroPorExtenso});
+  return JSON.stringify({"extenso" : numeroPorExtenso},null,' ');
 }
